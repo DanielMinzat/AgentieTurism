@@ -3,9 +3,11 @@ package dao.Iimpl;
 import dao.base.BaseDAO;
 import entity.base.ClientEntity;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityTransaction;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.ArrayList;
 
 public class ClientDaoImpl extends BaseDAO implements ClientDAO {
 
