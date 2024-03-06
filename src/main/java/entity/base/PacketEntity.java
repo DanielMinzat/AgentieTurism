@@ -7,12 +7,10 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
+
 @Entity(name = "packet")
 @Data
-@NoArgsConstructor
-@RequiredArgsConstructor
-public class PacketEntity extends BaseEntity  {
+public class PacketEntity   {
 
 
     @Column(name = "nume_agentie")
@@ -27,9 +25,13 @@ public class PacketEntity extends BaseEntity  {
     @NonNull
     private String transport;
 
+    @Id // PRIMARY KEY
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "packet_id")
+    private Integer packetId;
 
 
-    @ManyToMany(mappedBy = "packets", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "packetWithClients", fetch = FetchType.LAZY)
     private List<ClientEntity> clientsForPackets = new ArrayList<>();
 
     }

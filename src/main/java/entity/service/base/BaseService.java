@@ -5,6 +5,7 @@ import entity.base.PacketEntity;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
+
 public class BaseService {
     protected final SessionFactory sessionFactory = new Configuration()
             .configure() // incarca configuratia din resources -> bibernate.cfg.xml

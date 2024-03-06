@@ -12,8 +12,7 @@ public class MainController {
         ClientService clientService = new ClientServiceImpl();
         PacketService packetService = new PacketServiceImpl();
 
-        clientService.save(new ClientEntity("paul","paul","macamaca@gmail.com"));
-        packetService.save(new PacketEntity("dormeo","Italia","avion"));
+        clientService.save(new ClientEntity("paul","paul","hauhau@gmail.com"));
 
         System.out.println(clientService.findAll());
         System.out.println(clientService.searchById(1));

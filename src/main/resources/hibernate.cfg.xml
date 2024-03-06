@@ -5,21 +5,21 @@
 <hibernate-configuration>
 
     <!-- Session factory este echivalentul lui MysqlDataSource/DriverManager/Connection -->
-    <!-- Se ocupa cu partea de conexiune la configuratia serverului de Data Base -->
+    <!-- Se ocupa cu partea de conexiune la configuratia serverului de db -->
     <session-factory>
-        <!-- Credentialele bazei de date  -->
-        <property name="connection.url">jdbc:mysql://localhost:3306/agentie-turism?createDatabaseIfNotExist=true</property>
-        <property name="connection.ussername">sdauserapp</property>
+        <!-- Credentialele bazei de date -->
+        <property name="connection.url">jdbc:mysql://localhost:3306/agentie_turism2</property>
+        <property name="connection.username">sdauserapp</property>
         <property name="connection.password">sdauserapp</property>
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>
 
-        <!-- Dialectul reprezinta tipologia bazei de date -> MySql -->
+        <!-- Dialectul reprezinta tipologia bazei de date -> MySQL -->
         <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
-        <!-- Printeaza in terminal toate comenzile SQL rulate  -->
+        <!-- Printeaza in terminal toate comenzile SQL rulate -->
         <property name="show_sql">false</property>
-        <!-- Formateaza comenzile SQL printate mai frumos in terminal  -->
+        <!-- Formateaza comenzile SQL printate mai frumos in terminal -->
         <property name="format_sql">true</property>
-        <!-- Ne permite sa setam o regula de creare/actualizare a bazei de date si a tabelelor  -->
+        <!-- Ne permite sa setam o regula de creare.actualizare a bazei de date si a tabelelor -->
         <property name="hbm2ddl.auto">create-drop</property>
     </session-factory>
 

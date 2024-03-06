@@ -6,12 +6,11 @@ import lombok.*;
 import java.util.ArrayList;
 import java.util.List;
 
-@EqualsAndHashCode(callSuper = true)
+
 @Entity(name = "client")
 @Data
-@NoArgsConstructor
-@RequiredArgsConstructor
-public class ClientEntity extends BaseEntity {
+
+public class ClientEntity  {
 
     @Column(name = "name")
     @NonNull
@@ -25,10 +24,16 @@ public class ClientEntity extends BaseEntity {
     @NonNull
     private String email;
 
+    @Id // PRIMARY KEY
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "client_id")
+    private Integer clientId;
+
     @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "clients_to_packets",
-            joinColumns = @JoinColumn(name = "client_id",referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "packet_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "client_id"),
+            inverseJoinColumns = @JoinColumn(name = "packet_id"))
     private List<PacketEntity> packetWithClients = new ArrayList<>();
+
 
 }
