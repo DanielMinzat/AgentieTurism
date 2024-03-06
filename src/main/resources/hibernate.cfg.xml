@@ -20,7 +20,7 @@
         <!-- Formateaza comenzile SQL printate mai frumos in terminal -->
         <property name="format_sql">true</property>
         <!-- Ne permite sa setam o regula de creare.actualizare a bazei de date si a tabelelor -->
-        <property name="hbm2ddl.auto">create-drop</property>
+        <property name="hbm2ddl.auto">create</property>
     </session-factory>
 
 </hibernate-configuration>

@@ -9,7 +9,8 @@ import java.util.List;
 
 
 @Entity(name = "packet")
-@Data
+@Getter
+@Setter
 public class PacketEntity   {
 
 

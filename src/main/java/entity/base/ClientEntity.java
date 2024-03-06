@@ -8,7 +8,9 @@ import java.util.List;
 
 
 @Entity(name = "client")
-@Data
+@Getter
+@Setter
+
 
 public class ClientEntity  {
 
