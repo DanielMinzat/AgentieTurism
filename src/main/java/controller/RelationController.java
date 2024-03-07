@@ -6,95 +6,58 @@ import entity.service.impl.ClientService;
 import entity.service.impl.ClientServiceImpl;
 import entity.service.impl.PacketService;
 import entity.service.impl.PacketServiceImpl;
-import org.hibernate.SessionFactory;
-import org.hibernate.cfg.Configuration;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class RelationController {
     public static void main(String[] args) {
-
-        SessionFactory sessionFactory = new Configuration()
-                .configure() // incarca configuratia din resources -> bibernate.cfg.xml
-                .addAnnotatedClass(ClientEntity.class) // va adauga clasele de entitate ca standarde pentru comenzile sql
-                .addAnnotatedClass(PacketEntity.class)
-                .buildSessionFactory(); // porneste sesiunea, echivalentul lui getConnection din JDBC
-
-        ClientServiceImpl clientService = new ClientServiceImpl(sessionFactory.createEntityManager());
-        PacketServiceImpl packetService = new PacketServiceImpl(sessionFactory.createEntityManager());
+        // inirializam serviciile
+        ClientService clientService = new ClientServiceImpl();
+        PacketService packetService = new PacketServiceImpl();
 
 
-        Scanner scanner = new Scanner(System.in);
+        // cream entitati nerelationate
+        ClientEntity client = new ClientEntity();
+        PacketEntity packet = new PacketEntity();
 
-        ClientEntity client = buildClientAndSaveToDatabase(scanner, clientService);
+        client.setName("b");
+        client.setSurname("b");
+        client.setEmail("b");
 
-        System.out.println("client salvat: " + " " + client.getName() + " " + client.getSurname() + " " + client.getEmail());
-        System.out.println(clientService.searchById(1));
+        // salvam
+        clientService.save(client);
 
-        System.out.println();
 
-        PacketEntity packet = buildPacketAndSaveToDatabase(scanner, packetService);
 
-        client.setClientId(1);
-        packet.setPacketId(1);
+        // salvam
+        packetService.save(packet);
 
+        // stabilim relatiile many to many
         packet.getClientsForPackets().add(client);
         client.getPacketWithClients().add(packet);
 
-        clientService.save(client);
-        packetService.save(packet);
+        // printuri
+        List<PacketEntity> packetEntities = packetService.findAll();
+        List<ClientEntity> clientEntities = clientService.findAll();
 
-        System.out.println("pachet salvat: " + " " + packet.getNumeAgentie() + " " + packet.getCity() + " " + packet.getTransport());
+        for (PacketEntity itPacket : packetEntities) {
+            System.out.println("Packet: " + itPacket.getTransport() + " " + itPacket.getCity() + " " + itPacket.getNumeAgentie());
+            System.out.println("Client: ");
+            for (ClientEntity itClient : clientEntities) {
+                System.out.println("-> " + itClient.getName() + " " + itClient.getSurname() + " " + itClient.getEmail());
+            }
+            System.out.println("-------------------------------------");
+        }
 
-
-        scanner.close();
+        for (ClientEntity itClient : clientEntities) {
+            System.out.println("Client: " + itClient.getName() + " " + itClient.getSurname() + " " + itClient.getEmail());
+            System.out.println("Packet: ");
+            for (PacketEntity itPacket : packetEntities) {
+                System.out.println("-> " + itPacket.getTransport() + " " + itPacket.getCity() + " " + itPacket.getNumeAgentie());
+            }
+            System.out.println("-------------------------------------");
+        }
+    }
 
     }
 
-    private static PacketEntity buildPacketAndSaveToDatabase(Scanner scanner, PacketServiceImpl packetService) {
-        System.out.println("Alegeti un pachet de vacanta");
-
-        System.out.println("Introduceti numele orasului unde doriti sa mergeti:");
-        String cityName = scanner.nextLine();
-
-        System.out.println("Introduceti varianta de transport(avion/tren/autocar):");
-        String transportName = scanner.nextLine();
-
-        System.out.println("Introduceti numele agentiei pe care doriti sa o alegeti:");
-        String agencyName = scanner.nextLine();
-
-        PacketEntity packet = new PacketEntity();
-        packet.setCity(cityName);
-        packet.setTransport(transportName);
-        packet.setNumeAgentie(agencyName);
-
-
-        packetService.save(packet);
-        return packet;
-    }
-
-    private static ClientEntity buildClientAndSaveToDatabase(Scanner scanner, ClientServiceImpl clientService) {
-        System.out.println("Introduceti numele:");
-        String name = scanner.nextLine();
-
-        System.out.println("Introduceti prenumele:");
-        String surname = scanner.nextLine();
-
-        System.out.println("Introduceti adresa de email:");
-        String email = scanner.nextLine();
-
-        ClientEntity client = new ClientEntity();
-        client.setName(name);
-        client.setSurname(surname);
-        client.setEmail(email);
-
-        clientService.save(client);
-        return client;
-    }
-
-    private static String getDescription (PacketEntity packetEntity) {
-        return packetEntity.getCity()+ " " + packetEntity.getTransport() + " " + packetEntity.getNumeAgentie();
-    }
-}

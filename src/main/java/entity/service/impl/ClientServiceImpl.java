@@ -1,5 +1,7 @@
 package entity.service.impl;
 
+import dao.Iimpl.ClientDAO;
+import dao.Iimpl.ClientDaoImpl;
 import dao.base.BaseDAO;
 import entity.base.ClientEntity;
 import entity.service.base.BaseService;
@@ -10,112 +12,32 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class ClientServiceImpl extends BaseDAO implements ClientService {
+public class ClientServiceImpl extends BaseService implements ClientService {
 
-    public ClientServiceImpl(EntityManager entityManager) {
-        super(entityManager);
+    private ClientDAO clientDAO;
+
+    public ClientServiceImpl() {
+        this.clientDAO = new ClientDaoImpl(sessionFactory.createEntityManager());
     }
+
     @Override
     public ClientEntity save(ClientEntity client) {
-        EntityTransaction transaction = null;
-        try {
-            // check transaction is Null
-            transaction = entityManager.getTransaction();
-
-            if (!transaction.isActive()) {
-                transaction.begin();
-            }
-
-            // sql command
-            entityManager.persist(client);  // in contextul hibernate, persist = save/update element in table
-
-            // commit command
-            transaction.commit();
-        }catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-            return null;
-        }
-
-        return client;
+        return clientDAO.save(client);
     }
-
 
     @Override
     public void deleteById(Integer id) {
-        EntityTransaction transaction = null;
-        try {
-            // check transaction is Null
-            transaction = entityManager.getTransaction();
-
-            if (!transaction.isActive()) {
-                transaction.begin();
-            }
-
-            // sql command
-            Optional<ClientEntity> found = Optional.ofNullable(entityManager.find(ClientEntity.class, id));
-            if (found.isPresent()) {
-                entityManager.remove(found.get());
-            }
-            // commit command
-            transaction.commit();
-        }catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
+        this.clientDAO.deleteById(id);
     }
 
     @Override
     public Optional<ClientEntity> searchById(Integer id) {
-        EntityTransaction transaction = null;
-        Optional<ClientEntity> found = Optional.empty();
-        try {
-            // check transaction is Null
-            transaction = entityManager.getTransaction();
-
-            if (!transaction.isActive()) {
-                transaction.begin();
-            }
-
-            // sql command
-            found = Optional.ofNullable(entityManager.find(ClientEntity.class, id));
-
-            // commit command
-            transaction.commit();
-        }catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
-
-        return found;
+        return this.clientDAO.searchById(id);
     }
 
     @Override
     public List<ClientEntity> findAll() {
-        EntityTransaction transaction = null;
-        List<ClientEntity> resultList = new ArrayList<>();
-
-        try {
-            // check transaction is Null
-            transaction = entityManager.getTransaction();
-
-            if (!transaction.isActive()) {
-                transaction.begin();
-            }
-
-            // sql command
-            resultList = entityManager.createQuery("FROM actors", ClientEntity.class).getResultList();
-            // commit command
-            transaction.commit();
-        }catch (Exception e) {
-            if (transaction != null) {
-                transaction.rollback();
-            }
-        }
-
-        return resultList;
+        return this.clientDAO.findAll();
     }
 }
+

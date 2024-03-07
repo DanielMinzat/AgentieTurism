@@ -31,7 +31,7 @@ public class ClientEntity  {
     @Column(name = "client_id")
     private Integer clientId;
 
-    @ManyToMany(fetch = FetchType.LAZY)
+    @ManyToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST}) // am adaugat cascada asta deocamdata nu vad o schimbare
     @JoinTable(name = "clients_to_packets",
             joinColumns = @JoinColumn(name = "client_id"),
             inverseJoinColumns = @JoinColumn(name = "packet_id"))

@@ -32,7 +32,7 @@ public class PacketEntity   {
     private Integer packetId;
 
 
-    @ManyToMany(mappedBy = "packetWithClients", fetch = FetchType.LAZY)
+    @ManyToMany(mappedBy = "packetWithClients") // am scos fetch de aici
     private List<ClientEntity> clientsForPackets = new ArrayList<>();
 
     }
