@@ -13,10 +13,15 @@ import java.util.List;
 @Setter
 public class PacketEntity   {
 
+    public enum Agency {
+        Dertour,
+        TransAlpina,
+        Atlasib
+    }
 
     @Column(name = "nume_agentie")
     @NonNull
-    private String numeAgentie;
+    private String numeAgentie; // sa limitez la agentii facute de mine prestabilite (enum)
 
     @Column(name = "city")
     @NonNull
@@ -32,7 +37,23 @@ public class PacketEntity   {
     private Integer packetId;
 
 
-    @ManyToMany(mappedBy = "packetWithClients") // am scos fetch de aici
+    @ManyToMany(mappedBy = "packetWithClients", fetch = FetchType.LAZY)
     private List<ClientEntity> clientsForPackets = new ArrayList<>();
 
+    public static void showAgencyOptions() {
+        for (Agency agency : Agency.values()) {
+            System.out.println(agency.name());
+        }
     }
+
+
+    @Override
+    public String toString() {
+        return "Pachete din baza de date :" + " "
+                +  numeAgentie + " "
+                +  city  + " "
+                +  transport  + " " +
+                " cu numar de identificare: " + packetId + "\n" ;
+
+    }
+}

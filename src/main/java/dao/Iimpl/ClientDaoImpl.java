@@ -2,6 +2,7 @@ package dao.Iimpl;
 
 import dao.base.BaseDAO;
 import entity.base.ClientEntity;
+import entity.service.impl.ClientService;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 

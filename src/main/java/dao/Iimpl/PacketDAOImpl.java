@@ -107,7 +107,7 @@ public class PacketDAOImpl extends BaseDAO implements PacketDAO {
             }
 
             // sql command
-            resultList = entityManager.createQuery("FROM packet", PacketEntity.class).getResultList(); // atentie de asemenea aici ca era din from movies
+            resultList = entityManager.createQuery("FROM packet", PacketEntity.class).getResultList();
             // commit command
             transaction.commit();
         } catch (Exception e) {

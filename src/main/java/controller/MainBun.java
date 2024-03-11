@@ -1,25 +1,20 @@
 //package controller;
 //
-//import dao.Iimpl.PacketDAO;
 //import entity.base.ClientEntity;
 //import entity.base.PacketEntity;
 //import entity.service.impl.ClientService;
 //import entity.service.impl.ClientServiceImpl;
 //import entity.service.impl.PacketService;
 //import entity.service.impl.PacketServiceImpl;
-//import org.hibernate.Hibernate;
-//import org.hibernate.Session;
-//import org.hibernate.SessionFactory;
+//
 //
 //import java.util.List;
-//import java.util.Locale;
+//
 //import java.util.Optional;
 //import java.util.Scanner;
 //
-//public class TestMain {
+//public class MainBun {
 //    public static void main(String[] args) {
-//
-//
 //        ClientService clientService = new ClientServiceImpl();
 //        PacketService packetService = new PacketServiceImpl();
 //
@@ -43,8 +38,7 @@
 //
 //            clientService.save(client);
 //
-//
-//            System.out.println("Introduceti numele orasului unde doriti sa mergeti:");
+//            System.out.println("Introduceti numele orasului/tarii unde doriti sa mergeti:");
 //            String cityName = scanner.nextLine();
 //
 //            System.out.println("Introduceti varianta de transport(avion/tren/autocar):");
@@ -66,15 +60,12 @@
 //            clientService.save(client);
 //            packetService.save(packet);
 //
-//
 //            System.out.println("Clientul " + name + " " + surname + " este legat de pachetul cu transportul " + transportName + " către " + cityName + " oferit de agenția " + agencyName);
-//
 //
 //            System.out.println("Doriti sa adaugati un alt pachet (da/nu) ? ");
 //            String addAnotherPachetChoice = scanner.nextLine().toLowerCase();
 //            if (addAnotherPachetChoice.equals("da")) {
-//
-//                System.out.println("Introduceti numele orasului pentru noul pachet:");
+//                System.out.println("Introduceti numele orasului/tarii pentru noul pachet:");
 //                String newCityName = scanner.nextLine();
 //
 //                System.out.println("Introduceti varianta de transport pentru noul pachet (avion/tren/autocar):");
@@ -99,18 +90,60 @@
 //
 //            System.out.println("Doriti sa adaugati un alt client (da/nu)?");
 //            String addAnotherClientChoice = scanner.nextLine().toLowerCase();
-//            if (addAnotherClientChoice.equals("da")) {
-//                continue;
+//            if (!addAnotherClientChoice.equals("da")) {
+//                continueCreating = false;
+//            }
+//        }
+//
+//        // Afiseaza lista de pachete existente
+//        List<PacketEntity> packets = packetService.findAll();
+//        System.out.println("Lista de pachete existente:");
+//        for (PacketEntity packet : packets) {
+//            System.out.println(packet);
+//        }
+//
+//        // Afiseaza lista de clienti disponibili
+//        List<ClientEntity> clients = clientService.findAll();
+//        System.out.println("Lista de clienti disponibili:");
+//        for (ClientEntity client : clients) {
+//            System.out.println(client);
+//        }
+//
+//        // Solicitați utilizatorului ID-ul clientului și ID-ul noului pachet și actualizați asocierea client-pachet
+//        System.out.println("Introduceti ID-ul clientului pentru care doriti sa schimbati pachetul:");
+//        int clientId = Integer.parseInt(scanner.nextLine());
+//
+//        System.out.println("Introduceti ID-ul noului pachet:");
+//        int newPacketId = Integer.parseInt(scanner.nextLine());
+//
+//        Optional<ClientEntity> optionalClient = clientService.searchById(clientId);
+//        Optional<PacketEntity> optionalNewPacket = packetService.searchById(newPacketId);
+//
+//        if (optionalClient.isPresent() && optionalNewPacket.isPresent()) {
+//            ClientEntity clientToUpdate = optionalClient.get();
+//            PacketEntity newPacket = optionalNewPacket.get();
+//
+//            clientToUpdate.getPacketWithClients().clear();
+//            clientToUpdate.getPacketWithClients().add(newPacket);
+//            newPacket.getClientsForPackets().clear();
+//            for (PacketEntity oldPacket : clientToUpdate.getPacketWithClients()) {
+//                oldPacket.getClientsForPackets().remove(clientToUpdate);
 //            }
 //
+//            // Asociați clientul cu noul pachet
+//            clientToUpdate.getPacketWithClients().clear();
+//            clientToUpdate.getPacketWithClients().add(newPacket);
+//            newPacket.getClientsForPackets().add(clientToUpdate);
 //
+//            // Salvarea actualizărilor
+//            clientService.save(clientToUpdate);
+//            packetService.save(newPacket);
 //
-//            continueCreating = false;
-//
+//            System.out.println("Asocierea pachetului a fost actualizată cu succes pentru clientul cu ID-ul " + clientId);
+//        } else {
+//            System.out.println("Clientul sau pachetul cu ID-urile specificate nu există.");
 //        }
-//            scanner.close();
 //
-//        }
+//        scanner.close();
 //    }
-//
-//
+//}

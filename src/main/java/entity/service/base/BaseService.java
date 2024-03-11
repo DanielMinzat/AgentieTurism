@@ -9,7 +9,7 @@ import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
 
-public class BaseService {
+public abstract class BaseService {
     protected final SessionFactory sessionFactory = new Configuration()
             .configure() // incarca configuratia din resources -> bibernate.cfg.xml
             .addAnnotatedClass(ClientEntity.class) // va adauga clasele de entitate ca standarde pentru comenzile sql
