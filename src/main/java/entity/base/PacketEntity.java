@@ -1,6 +1,7 @@
 package entity.base;
 
 
+import enums.Agency;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -13,11 +14,7 @@ import java.util.List;
 @Setter
 public class PacketEntity   {
 
-    public enum Agency {
-        Dertour,
-        TransAlpina,
-        Atlasib
-    }
+
 
     @Column(name = "nume_agentie")
     @NonNull

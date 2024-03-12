@@ -11,20 +11,40 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Scanner;
 
-public class MainBun2 {
+public class MainBunNuAtinge {
     public static void main(String[] args) {
         ClientService clientService = new ClientServiceImpl();
         PacketService packetService = new PacketServiceImpl();
-
-
 
         Scanner scanner = new Scanner(System.in);
         boolean continueCreating = true;
 
         while (continueCreating) {
             ClientEntity client = createClientFromInput(scanner);
-            PacketEntity packet =createPacketFromInput(scanner);
 
+            System.out.println("Introduceti numele orasului/tarii unde doriti sa mergeti:");
+            String cityName = scanner.nextLine();
+
+            System.out.println("Introduceti varianta de transport(avion/tren/autocar):");
+            String transportName = scanner.nextLine();
+
+            System.out.println("Introduceti numele agentiei pe care doriti sa o alegeti:");
+            String agencyName = scanner.nextLine();
+
+            PacketEntity packet = new PacketEntity();
+            packet.setCity(cityName);
+            packet.setTransport(transportName);
+            packet.setNumeAgentie(agencyName);
+
+            packetService.save(packet);
+
+            client.getPacketWithClients().add(packet);
+            packet.getClientsForPackets().add(client);
+
+            clientService.save(client);
+            packetService.save(packet);
+
+            System.out.println("Clientul " + client.getName() + " " + client.getSurname() + " este legat de pachetul cu transportul " + transportName + " către " + cityName + " oferit de agenția " + agencyName);
 
             System.out.println("Doriti sa adaugati un alt pachet (da/nu) ? ");
             String addAnotherPachetChoice = scanner.nextLine().toLowerCase();
@@ -35,8 +55,7 @@ public class MainBun2 {
                 System.out.println("Introduceti varianta de transport pentru noul pachet (avion/tren/autocar):");
                 String newTransportName = scanner.nextLine();
 
-
-                PacketEntity.showAgencyOptions();
+                System.out.println("Introduceti numele agentiei pentru noul pachet:");
                 String newAgencyName = scanner.nextLine();
 
                 PacketEntity newPacket = new PacketEntity();
@@ -116,7 +135,6 @@ public class MainBun2 {
         while (true) {
             try {
                 ClientEntity client = new ClientEntity();
-                ClientService clientService = new ClientServiceImpl();
 
                 System.out.println("Introduceti numele:");
                 String name = scanner.nextLine();
@@ -127,8 +145,6 @@ public class MainBun2 {
                 System.out.println("Introduceti adresa de email:");
                 String email = scanner.nextLine();
 
-
-
                 // Validare adresa de email
                 if (!isValidEmail(email)) {
                     throw new IllegalArgumentException("Adresa de email introdusă nu este validă.");
@@ -138,73 +154,15 @@ public class MainBun2 {
                 client.setSurname(surname);
                 client.setEmail(email);
 
-                clientService.save(client);
-
                 return client;
-
             } catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-
+                System.out.println(e.getMessage()); //
                 System.out.println("Vă rugăm să reintroduceți datele.");
             }
         }
     }
 
-    // Metoda pentru validarea adresei de email
     private static boolean isValidEmail(String email) {
-        return true; // Puteți implementa validarea emailului aici
+        return true;
     }
-
-    public static PacketEntity createPacketFromInput(Scanner scanner) {
-        while (true) {
-            try {
-                PacketEntity packet = new PacketEntity();
-                PacketService packetService = new PacketServiceImpl();
-                System.out.println("Introduceti numele orasului/tarii unde doriti sa mergeti:");
-                String cityName = scanner.nextLine();
-
-                System.out.println("Introduceti varianta de transport(avion/tren/autocar):");
-                String transportName = scanner.nextLine();
-
-                System.out.println("Alegeți agenția din lista de mai jos:");
-                PacketEntity.showAgencyOptions();
-                String agencyName =selectValidAgency(scanner);
-
-
-
-                packet.setCity(cityName);
-                packet.setTransport(transportName);
-                packet.setNumeAgentie(agencyName);
-                packetService.save(packet);
-
-                return packet;
-
-
-            }catch (IllegalArgumentException e) {
-                System.out.println(e.getMessage());
-                System.out.println("Va rugam sa alegeti optiunea oferita de noi.");
-            }
-        }
-    }
-
-    public static boolean isValidAgency(String agencyName) {
-        for (PacketEntity.Agency agency : PacketEntity.Agency.values()) {
-            if (agency.name().equalsIgnoreCase(agencyName))
-            return true;
-        }
-        return false;
-    }
-
-
-    public static String selectValidAgency(Scanner scanner) {
-        String agencyName;
-        do {
-            System.out.println("Introduceti numele agentiei pe care doriti sa o alegeti:");
-            PacketEntity.showAgencyOptions();
-            agencyName = scanner.nextLine();
-        }while (!isValidAgency(agencyName));
-
-        return agencyName;
-    }
-
 }
