@@ -2,13 +2,15 @@ package entity.base;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Pattern;
 
 
 @Entity(name = "client")
-@Data
+@Getter
+@Setter
+
 
 public class ClientEntity  {
 
@@ -22,7 +24,8 @@ public class ClientEntity  {
 
     @Column(name = "email")
     @NonNull
-    private String email;
+    private String email;   // cum sa fac validare pe email
+    // daca el este invalid throw exception "Invalid email"
 
     @Id // PRIMARY KEY
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +38,28 @@ public class ClientEntity  {
             inverseJoinColumns = @JoinColumn(name = "packet_id"))
     private List<PacketEntity> packetWithClients = new ArrayList<>();
 
+    @Override
+    public String toString() {
+        return "Clienti din baza de date :" + " "
+               +  name + " "
+                +  surname  + " "
+               +  email  + " " +
+                " cu numar de identificare: " + clientId + "\n" ;
 
+    }
+
+    public void setEmail(String email) {
+        if (isValidEmail(email)) {
+            this.email = email;
+        }else {
+            throw new IllegalArgumentException("Adresă de e-mail invalidă. Reintroduceti datele.");
+        }
+    }
+
+    protected boolean isValidEmail(String email) {
+        // Expresie regulata pentru validarea adresei de e-mail
+        String emailRegex =  "^(.+)@(.+)$";
+        Pattern pattern = Pattern.compile(emailRegex);
+        return pattern.matcher(email).matches();
+    }
 }
