@@ -2,14 +2,8 @@ package entity.service.impl;
 
 import dao.Iimpl.PacketDAO;
 import dao.Iimpl.PacketDAOImpl;
-import dao.base.BaseDAO;
-import entity.base.ClientEntity;
 import entity.base.PacketEntity;
 import entity.service.base.BaseService;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.EntityTransaction;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 

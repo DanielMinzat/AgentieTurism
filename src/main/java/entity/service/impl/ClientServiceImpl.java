@@ -4,7 +4,6 @@ import dao.Iimpl.ClientDAO;
 import dao.Iimpl.ClientDaoImpl;
 import entity.base.ClientEntity;
 import entity.service.base.BaseService;
-
 import java.util.List;
 import java.util.Optional;
 

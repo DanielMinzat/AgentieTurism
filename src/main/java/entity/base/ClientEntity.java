@@ -2,10 +2,8 @@ package entity.base;
 
 import jakarta.persistence.*;
 import lombok.*;
-
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 import java.util.regex.Pattern;
 
 
@@ -58,7 +56,7 @@ public class ClientEntity  {
         }
     }
 
-    private boolean isValidEmail(String email) {
+    protected boolean isValidEmail(String email) {
         // Expresie regulata pentru validarea adresei de e-mail
         String emailRegex =  "^(.+)@(.+)$";
         Pattern pattern = Pattern.compile(emailRegex);

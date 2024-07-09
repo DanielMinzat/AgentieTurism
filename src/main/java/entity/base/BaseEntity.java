@@ -3,7 +3,7 @@ package entity.base;
 import jakarta.persistence.*;
 
 @MappedSuperclass
-public abstract class BaseEntity {
+public class BaseEntity {
 
     @Id // PRIMARY KEY
     @GeneratedValue(strategy = GenerationType.IDENTITY)

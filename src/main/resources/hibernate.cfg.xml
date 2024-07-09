@@ -8,7 +8,7 @@
     <!-- Se ocupa cu partea de conexiune la configuratia serverului de db -->
     <session-factory>
         <!-- Credentialele bazei de date -->
-        <property name="connection.url">jdbc:mysql://localhost:3306/agentie_turism2</property>
+        <property name="connection.url">jdbc:mysql://localhost:3306/agentieturism</property>
         <property name="connection.username">sdauserapp</property>
         <property name="connection.password">sdauserapp</property>
         <property name="connection.driver_class">com.mysql.cj.jdbc.Driver</property>

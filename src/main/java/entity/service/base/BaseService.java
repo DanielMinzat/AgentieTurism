@@ -2,9 +2,6 @@ package entity.service.base;
 
 import entity.base.ClientEntity;
 import entity.base.PacketEntity;
-import jakarta.persistence.EntityManager;
-import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 

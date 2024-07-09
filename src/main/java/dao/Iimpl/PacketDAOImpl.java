@@ -4,7 +4,6 @@ import dao.base.BaseDAO;
 import entity.base.PacketEntity;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
